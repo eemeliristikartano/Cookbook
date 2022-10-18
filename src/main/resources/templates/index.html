@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Reseptikirja</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<h1>Reseptit</h1>
+	<div>
+	<table>
+		<tr>
+			<th>Nimi</th>
+		</tr>
+		<tr th:each = "recipe : ${recipes}">
+			<td th:text = "${recipe.name}">Nimi</td>		
+		</tr>
+	</table>
+	</div>
+</body>
+</html>
