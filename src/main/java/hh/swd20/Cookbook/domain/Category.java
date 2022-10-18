@@ -2,6 +2,7 @@ package hh.swd20.Cookbook.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +16,7 @@ public class Category {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long categoryId;
 	private String name;
-	@OneToMany(mappedBy = "category")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
 	private List<Food> foods;
 	
 	public Category() {	}
@@ -50,7 +51,7 @@ public class Category {
 
 	@Override
 	public String toString() {
-		return "Category [categoryId=" + categoryId + ", name=" + name + "]";
+		return "Category [name=" + name + "]";
 	}
 	
 	

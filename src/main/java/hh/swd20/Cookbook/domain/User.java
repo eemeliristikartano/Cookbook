@@ -2,6 +2,7 @@ package hh.swd20.Cookbook.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,10 +23,10 @@ public class User {
 	@Column(nullable = false)
 	private String role;
 	
-	@OneToMany(mappedBy = "user")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private List<Food> foods;
 	
-	@OneToMany(mappedBy = "user")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private List<Review> reviews;
 	
 	public User() {}

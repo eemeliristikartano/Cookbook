@@ -2,6 +2,7 @@ package hh.swd20.Cookbook.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,12 +25,12 @@ public class Review {
 	@Column(nullable = false)
 	private String status;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnoreProperties("reviews")
 	@JoinColumn(name = "foodId")
 	private Food food;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnoreProperties("reviews")
 	@JoinColumn(name = "userId")
 	private User user;
@@ -37,7 +38,6 @@ public class Review {
 	public Review() {}
 
 	public Review(double points, String comment, String status, Food food, User user) {
-		super();
 		this.points = points;
 		this.comment = comment;
 		this.status = status;
