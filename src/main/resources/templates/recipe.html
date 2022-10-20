@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Resepti</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>	
+	<div style="max-width: 75%; margin: auto">
+		<h1 th:text="${food.name}"></h1> 
+		<a class="btn btn-primary" href="/" role="button">Etusivu</a>
+		<br>
+		<h2>Ainesosat</h2>
+		<table class="table table-striped table-hover">
+			<tr th:each="ingredient : ${food.ingredients}">
+				<td th:text="${ingredient.name}">
+				<td th:text="${ingredient.amount.amount} + ${ingredient.amount.unit}">
+			</tr>
+		</table>
+		<br>
+		<h2>Ohjeet</h2>
+			<p th:text="${food.instructions}"></p>
+			<br>
+			<p th:text="'Resepti lisätty ' + ${food.dateCreated} + ' käyttäjän ' + ${food.user.username} + ' toimesta.'"></p>
+			<a class="btn btn-primary" href="/" role="button">Etusivu</a>
+	</div>
+	
+</body>
+</html>
