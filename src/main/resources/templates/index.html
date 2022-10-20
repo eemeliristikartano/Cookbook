@@ -3,18 +3,22 @@
 <head>
 <title>Reseptikirja</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
 </head>
 <body>
-	<h1>Reseptit</h1>
-	<div>
-	<table>
-		<tr>
-			<th>Nimi</th>
-		</tr>
-		<tr th:each = "recipe : ${recipes}">
-			<td th:text = "${recipe.name}">Nimi</td>		
-		</tr>
-	</table>
+	<h1 style="margin: auto; text-align: center;">Reseptit</h1>
+	<div style="max-width: 50%; margin: auto">
+		<table class="table table-striped table-hover">
+			<tr>
+				<th>Nimi</th>
+			</tr>
+			<tr th:each = "food : ${foods}">
+				<td>
+					<a th:href="@{/recipe/{id}(id=${food.foodId})}" th:text="${food.name}"></a>
+				</td>
+			</tr>
+		</table>
 	</div>
 </body>
 </html>
