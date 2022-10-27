@@ -1,14 +1,15 @@
 package hh.swd20.Cookbook.domain;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Amount {
@@ -19,55 +20,82 @@ public class Amount {
 	private String amount;
 	private String unit;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "amount")
-	private List<Ingredient> ingredients;
+//	@ManyToMany(mappedBy = "amounts")
+//	private Set<Ingredient> ingredients = new HashSet<>();
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnoreProperties("amounts")
+	@JoinColumn(name = "ingredientId")
+	private Ingredient ingredient;
+	
+	
 	
 	public Amount() {}
 
-	public Amount(String amount, String unit) {
+
+
+	public Amount(String amount, String unit, Ingredient ingredient) {
+		super();
 		this.amount = amount;
 		this.unit = unit;
+		this.ingredient = ingredient;
 	}
+
+
 
 	public Long getAmountId() {
 		return amountId;
 	}
 
+
+
 	public void setAmountId(Long amountId) {
 		this.amountId = amountId;
 	}
+
+
 
 	public String getAmount() {
 		return amount;
 	}
 
+
+
 	public void setAmount(String amount) {
 		this.amount = amount;
 	}
+
+
 
 	public String getUnit() {
 		return unit;
 	}
 
+
+
 	public void setUnit(String unit) {
 		this.unit = unit;
 	}
 
-	public List<Ingredient> getIngredients() {
-		return ingredients;
+
+
+	public Ingredient getIngredient() {
+		return ingredient;
 	}
 
-	public void setIngredients(List<Ingredient> ingredients) {
-		this.ingredients = ingredients;
+
+
+	public void setIngredient(Ingredient ingredient) {
+		this.ingredient = ingredient;
 	}
+
+
 
 	@Override
 	public String toString() {
-		return "Amount [amount=" + amount + ", unit=" + unit + "]";
+		return "Amount [amountId=" + amountId + ", amount=" + amount + ", unit=" + unit + ", ingredient=" + ingredient
+				+ "]";
 	}
 
 	
-	
-	
-
 }

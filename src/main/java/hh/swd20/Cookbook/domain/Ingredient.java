@@ -1,19 +1,19 @@
 package hh.swd20.Cookbook.domain;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Ingredient {
@@ -25,21 +25,31 @@ public class Ingredient {
 	@Column(nullable = false)
 	private String name;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JsonIgnoreProperties("ingredients")
-	@JoinColumn(name = "amountId")
-	private Amount amount;
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JsonIgnoreProperties("ingredients")
+//	@JoinColumn(name = "amountId")
+//	private Amount amount;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ingredient")
+	private List<Amount> amounts;
 	
 	@ManyToMany(mappedBy = "ingredients")
 	private Set<Food> foods = new HashSet<Food>();
 	
+//	@ManyToMany(cascade = CascadeType.PERSIST)
+//	@JoinTable(name = "Amounts",
+//			joinColumns = {@JoinColumn(name="ingredientId")},
+//			inverseJoinColumns = {@JoinColumn(name="amountId")}
+//			)
+//	private Set<Amount> amounts = new HashSet<Amount>();
+	
 	public Ingredient() {}
 
-	public Ingredient(String name, Amount amount) {
+	public Ingredient(String name, List<Amount> amounts, Set<Food> foods) {
 		super();
 		this.name = name;
-		this.amount = amount;
-		
+		this.amounts = amounts;
+		this.foods = foods;
 	}
 
 	public Long getIngredientId() {
@@ -58,12 +68,12 @@ public class Ingredient {
 		this.name = name;
 	}
 
-	public Amount getAmount() {
-		return amount;
+	public List<Amount> getAmounts() {
+		return amounts;
 	}
 
-	public void setAmount(Amount amount) {
-		this.amount = amount;
+	public void setAmounts(List<Amount> amounts) {
+		this.amounts = amounts;
 	}
 
 	public Set<Food> getFoods() {
@@ -76,17 +86,8 @@ public class Ingredient {
 
 	@Override
 	public String toString() {
-		return "Ingredient [ingredientId=" + ingredientId + ", name=" + name + ",]";
+		return "Ingredient [ingredientId=" + ingredientId + ", name=" + name + "]";
 	}
-	
-	
 
-	
-	
-	
-
-	
-	
-	
-	
+		
 }
