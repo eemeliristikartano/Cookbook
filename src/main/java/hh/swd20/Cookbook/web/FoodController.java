@@ -1,10 +1,12 @@
 package hh.swd20.Cookbook.web;
 
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +54,7 @@ public class FoodController {
 	 */
 	
 	@GetMapping("/recipe/{id}")
-	public String recipe(@PathVariable("id")Long id, Model model) {
+	public String getRecipe(@PathVariable("id")Long id, Model model) {
 		model.addAttribute("food", frepository.findById(id).get());
 		return "recipe";
 	}
@@ -68,7 +70,7 @@ public class FoodController {
 	
 	@CrossOrigin
 	@PostMapping("/saverecipe")
-	public @ResponseBody Food saveNewFood(@RequestBody String foodFromRest) {
+	public @ResponseBody String saveNewFood(@RequestBody String foodFromRest) {
 		Set<Ingredient> ingredients = new HashSet<Ingredient>();
 		//Creates jsonobject from string.
 		JsonObject jsonFood = JsonParser.parseString(foodFromRest).getAsJsonObject();
@@ -118,7 +120,21 @@ public class FoodController {
 		}
 		//Add all the ingredients to Food-object.
 		food.setIngredients(ingredients);
-		return frepository.save(food);
+		frepository.save(food);
+		return "redirect:/";
+	}
+	
+	@GetMapping("/deleterecipe/{id}")
+	public String deleteRecipe(@PathVariable("id") Long recipeId) {
+		frepository.deleteById(recipeId);
+		return "redirect:/";
+	}
+	
+	@CrossOrigin
+	@GetMapping("/editrecipe/{id}")
+	public @ResponseBody String updateRecipe(@PathVariable("id") Long recipeId, Model model) {
+		//TODO
+		return "";
 	}
 
 }

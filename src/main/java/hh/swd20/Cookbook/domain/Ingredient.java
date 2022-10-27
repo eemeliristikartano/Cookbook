@@ -10,8 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
@@ -25,23 +23,11 @@ public class Ingredient {
 	@Column(nullable = false)
 	private String name;
 	
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JsonIgnoreProperties("ingredients")
-//	@JoinColumn(name = "amountId")
-//	private Amount amount;
-	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ingredient")
 	private List<Amount> amounts;
 	
 	@ManyToMany(mappedBy = "ingredients")
 	private Set<Food> foods = new HashSet<Food>();
-	
-//	@ManyToMany(cascade = CascadeType.PERSIST)
-//	@JoinTable(name = "Amounts",
-//			joinColumns = {@JoinColumn(name="ingredientId")},
-//			inverseJoinColumns = {@JoinColumn(name="amountId")}
-//			)
-//	private Set<Amount> amounts = new HashSet<Amount>();
 	
 	public Ingredient() {}
 

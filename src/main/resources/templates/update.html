@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Edit book</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</head>
+<body>
+
+<h1>Muokkaa reseptiä</h1>
+			
+	<form action="#" th:action="@{/saverecipe}" th:object="${food}"  method="post">
+		<input type="hidden" th:field="${food.foodId}" />
+		<p>Nimi: <input th:field="${food.name}" type="text"> </p>
+		<p>Ohje: <input th:field="${food.instructions}" type="text"> </p>
+		
+		<input th:each="ingredient : ${food.ingredients}" th:field="${ingredient.name}"  type="text" >
+<!-- 		<p>ISBN: <input th:field="${book.isbn}" type="text"> </p> -->
+<!-- 		<p>Release year: <input th:field="${book.publishYear}" type="text"> </p> -->
+<!-- 		<p>Price: <input th:field="${book.price}" type="number" step=".01"> </p> -->
+<!-- 		<label for="deplist">Category</label> -->
+<!-- 			 <select id="deplist" th:field="*{category}" class="form-control"> -->
+<!--        			<option th:each="category: ${categories}" th:value="${category.categoryId}" th:text="${category.name}"></option> -->
+<!--     		</select> <br> -->
+		<input type="submit" value="Save">
+		
+	
+	</form>
+	
+
+
+</body>
+</html>
