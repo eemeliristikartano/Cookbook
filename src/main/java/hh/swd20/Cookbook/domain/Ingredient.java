@@ -1,41 +1,49 @@
 package hh.swd20.Cookbook.domain;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Ingredient {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false, updatable = false)
 	private Long ingredientId;
 	@Column(nullable = false)
 	private String name;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ingredient")
-	private List<Amount> amounts;
+//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ingredient")
+//	private List<Amount> amounts;
 	
-	@ManyToMany(mappedBy = "ingredients")
-	private Set<Food> foods = new HashSet<Food>();
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnoreProperties("ingredients")
+	@JoinColumn(name = "amountId")
+	private Amount amount;
+	
+//	@ManyToMany(mappedBy = "ingredients")
+//	private Set<Food> foods = new HashSet<Food>();
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnoreProperties("ingredients")
+	@JoinColumn(name = "foodId")
+	private Food food;
 	
 	public Ingredient() {}
 
-	public Ingredient(String name, List<Amount> amounts, Set<Food> foods) {
+	public Ingredient(String name, Amount amount, Food food) {
 		super();
 		this.name = name;
-		this.amounts = amounts;
-		this.foods = foods;
+		this.amount = amount;
+		this.food = food;
 	}
 
 	public Long getIngredientId() {
@@ -54,25 +62,26 @@ public class Ingredient {
 		this.name = name;
 	}
 
-	public List<Amount> getAmounts() {
-		return amounts;
+	public Amount getAmount() {
+		return amount;
 	}
 
-	public void setAmounts(List<Amount> amounts) {
-		this.amounts = amounts;
+	public void setAmount(Amount amount) {
+		this.amount = amount;
 	}
 
-	public Set<Food> getFoods() {
-		return foods;
+	public Food getFood() {
+		return food;
 	}
 
-	public void setFoods(Set<Food> foods) {
-		this.foods = foods;
+	public void setFood(Food food) {
+		this.food = food;
 	}
 
 	@Override
 	public String toString() {
-		return "Ingredient [ingredientId=" + ingredientId + ", name=" + name + "]";
+		return "Ingredient [ingredientId=" + ingredientId + ", name=" + name + ", amount=" + amount + ", food=" + food
+				+ "]";
 	}
 
 		

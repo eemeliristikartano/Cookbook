@@ -13,16 +13,16 @@
 		<br>
 		<h2>Ainesosat</h2>
 		<table class="table table-striped table-hover">
-			<tr th:each="ingredient : ${food.ingredients}">
+			<tr th:each="ingredient : ${ingredients}">
 				<td th:text="${ingredient.name}">
-				<td th:each=" amount : ${ingredient.amounts}" th:text="${amount.amount} + '' + ${amount.unit}">
+				<td th:each=" amount : ${ingredient.amount}" th:text="${amount.amount} + '' + ${amount.unit}">
 			</tr>
 		</table>
 		<br>
 		<h2>Ohjeet</h2>
 			<p th:text="${food.instructions}"></p>
 			<br>
-			<p th:text="'Resepti lisätty ' + ${food.dateCreated} + ' käyttäjän ' + ' toimesta.'"></p>
+			<p th:text="'Resepti lisätty ' + ${#temporals.format(food.dateCreated, 'dd.MM.yyyy')} + ' käyttäjän ' + ' toimesta.'"></p>
 			<a class="btn btn-primary" href="/" role="button">Etusivu</a>
 	</div>
 	

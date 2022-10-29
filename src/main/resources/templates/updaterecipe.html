@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Edit book</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+
+	<h1 style="margin: auto; text-align: center;">Muokkaa reseptiä</h1>
+		<div style="max-width: 50%; margin: auto">
+			<form action="#" th:action="@{/updaterecipe}" th:object="${food}"  method="post">
+					<input type="hidden" th:field="${food.foodId}" />
+					<input type="hidden" th:field="${food.dateCreated}" >
+					<input type="hidden" th:field="${food.user.userId}">
+					<p>Nimi: <input th:field="${food.name}" type="text"> </p>
+					<p>Ohje: <input th:field="${food.instructions}" type="text"> </p>
+					<p>Lähde: <input th:field="${food.source}" type="text"> </p>
+			
+					<label for="deplist">Category</label>
+						<select id="deplist" th:field="*{category}" class="form-control">
+			       			<option th:each="category: ${categories}" th:value="${category.categoryId}" th:text="${category.name}"></option>
+			    		</select> <br>
+			    		
+			    		<table class="table table-striped">
+							  <tr>
+							    <th>Ainesosa</th>
+							    <th>Määrä</th>
+							  </tr>
+							  <tr th:each="ingredient : ${ingredients}">
+							    <td th:text="${ingredient.name}">Author</td>
+							    <td th:text="${ingredient.amount.amount} + ' ' + ${ingredient.amount.unit}">
+							    <td><a class="btn btn-secondary" th:href="@{/editingredient/{id}(id=${ingredient.ingredientId})}">Muokkaa</a></td>
+							  </tr>
+						</table>    
+								
+					<input type="submit" value="Tallenna">
+		</form>
+	</div>
+			
+	
+	
+	
+	
+
+
+</body>
+</html>

@@ -9,12 +9,4 @@ public interface AmountRepository extends CrudRepository<Amount, Long> {
 	
 	@Query("SELECT DISTINCT unit FROM Amount")
 	List<String> findAllUnits();
-	
-	List<Amount> findByAmountAndUnit(String amount, String unit);
-	
-	Amount findByAmount(String amount);
-	
-	@Query("SELECT amount, unit FROM Amount WHERE INGREDIENT_ID=?1")
-	String getWithIngredientId(Long ingredientId);
-
 }

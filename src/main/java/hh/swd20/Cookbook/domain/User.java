@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 @Entity(name="users")
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false, updatable = false)
 	private Long userId;
 	@Column(nullable = false, unique = true)
