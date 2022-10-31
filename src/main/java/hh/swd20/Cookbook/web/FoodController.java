@@ -184,10 +184,32 @@ public class FoodController {
 		return "redirect:/editrecipe/" + foodId;
 	}
 	
-	@GetMapping("/addingredient")
-	public String addIngredient() {
-		//TODO: method for adding ingredient to food.
+	/*
+	 * Method for adding new ingredient to recipe.
+	 */
+	
+	@GetMapping("/addingredient/{foodId}")
+	public String addIngredient(@PathVariable("foodId") Long foodId, Model model) {
+		model.addAttribute("food", frepository.findById(foodId).get());
+		model.addAttribute("ingredient", new Ingredient());
+		model.addAttribute("units", arepository.findAllUnits());
 		return "newingredient";
+	}
+	
+	/*
+	 * Methdod that saves the new ingredient. Sets status and dateEdited on Food. 
+	 */
+	
+	@PostMapping("/saveingredient/{foodId}")
+	public String saveIngredient(@ModelAttribute Ingredient ingredient, @PathVariable("foodId") Long foodId) {
+		Food food = frepository.findById(foodId).get();
+		food.setStatus("I");
+		food.setDateEdited(LocalDate.now());
+		frepository.save(food);
+		arepository.save(ingredient.getAmount());
+		ingredient.setFood(food);
+		irepository.save(ingredient);	
+		return "redirect:/editrecipe/" + food.getFoodId();
 	}
 	
 }
