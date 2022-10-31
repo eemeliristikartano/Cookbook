@@ -27,6 +27,11 @@ import hh.swd20.Cookbook.domain.FoodRepository;
 import hh.swd20.Cookbook.domain.Ingredient;
 import hh.swd20.Cookbook.domain.IngredientRepository;
 
+/*
+ * This controller contains methods for creating, reading, updating and deleting recipes.
+ */
+
+
 @Controller
 public class FoodController {
 	
@@ -157,59 +162,11 @@ public class FoodController {
 		food.setIngredients(frepository.findById(food.getFoodId()).get().getIngredients());
 		food.setDateEdited(LocalDate.now());
 		food.setStatus("I");
+		food.setUser(null);
 		frepository.save(food);
 		return "redirect:/";
 	}
 	
-	/*
-	 * Method for editing ingredient in a food. 
-	 */
 	
-	@GetMapping("/editingredient/{id}")
-	public String updateIngredient(@PathVariable("id") Long ingredientId, Model model) {
-		model.addAttribute("ingredient", irepository.findById(ingredientId).get());
-		model.addAttribute("units", arepository.findAllUnits());
-		return "updateingredient";
-	}
-	
-	/*
-	 * Commits ingredient update. Sets amount for ingredient and saves ingredient.
-	 */
-	
-	@PostMapping("/updateingredient")
-	public String updateIngredient(@ModelAttribute Ingredient ingredient) {
-		Long foodId = ingredient.getFood().getFoodId();
-		arepository.save(ingredient.getAmount());
-		irepository.save(ingredient);
-		return "redirect:/editrecipe/" + foodId;
-	}
-	
-	/*
-	 * Method for adding new ingredient to recipe.
-	 */
-	
-	@GetMapping("/addingredient/{foodId}")
-	public String addIngredient(@PathVariable("foodId") Long foodId, Model model) {
-		model.addAttribute("food", frepository.findById(foodId).get());
-		model.addAttribute("ingredient", new Ingredient());
-		model.addAttribute("units", arepository.findAllUnits());
-		return "newingredient";
-	}
-	
-	/*
-	 * Methdod that saves the new ingredient. Sets status and dateEdited on Food. 
-	 */
-	
-	@PostMapping("/saveingredient/{foodId}")
-	public String saveIngredient(@ModelAttribute Ingredient ingredient, @PathVariable("foodId") Long foodId) {
-		Food food = frepository.findById(foodId).get();
-		food.setStatus("I");
-		food.setDateEdited(LocalDate.now());
-		frepository.save(food);
-		arepository.save(ingredient.getAmount());
-		ingredient.setFood(food);
-		irepository.save(ingredient);	
-		return "redirect:/editrecipe/" + food.getFoodId();
-	}
 	
 }
