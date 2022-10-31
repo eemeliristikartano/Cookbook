@@ -163,7 +163,7 @@ public class Food {
 	public String toString() {
 		return "Food [foodId=" + foodId + ", name=" + name + ", instructions=" + instructions + ", dateCreated="
 				+ dateCreated + ", dateEdited=" + dateEdited + ", status=" + status + ", source=" + source
-				+ ", reviews=" + reviews + ", category=" + category + ", user=" + user + ", ingredients=" + ingredients
+				+ ", reviews=" + ", category=" + category + ", user=" + user + ", ingredients="
 				+ "]";
 	}
 	
