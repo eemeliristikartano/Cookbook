@@ -2,7 +2,6 @@ package hh.swd20.Cookbook.domain;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,31 +17,17 @@ public class Amount {
 	private Long amountId;
 	private String amount;
 	private String unit;
-	
-//	@ManyToMany(mappedBy = "amounts")
-//	private Set<Ingredient> ingredients = new HashSet<>();
-	
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JsonIgnoreProperties("amounts")
-//	@JoinColumn(name = "ingredientId")
-//	private Ingredient ingredient;
-	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "amount")
+
+	@OneToMany( mappedBy = "amount")
 	private List<Ingredient> ingredients;
 	
-	
-	
 	public Amount() {}
-
-
 
 	public Amount(String amount, String unit) {
 		super();
 		this.amount = amount;
 		this.unit = unit;
 	}
-
-
 
 	public Long getAmountId() {
 		return amountId;

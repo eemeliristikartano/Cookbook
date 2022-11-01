@@ -4,12 +4,13 @@
 <title>Reseptikirja</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+<link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
 </head>
 <body>
 	<h1 style="margin: auto; text-align: center;">Reseptit</h1>
+	<h3 th:inline="text">Tervetuloa [[${#httpServletRequest.remoteUser}]]</h3>
 	<div style="max-width: 50%; margin: auto">
-	<a class="btn btn-primary" href="/addrecipe" role="button">Lisää resepti</a> <a class="btn btn-primary" href="/" role="button">Oma profiili</a>
+	<a class="btn btn-primary" href="/addrecipe" role="button">Lisää resepti</a> <a class="btn btn-primary" th:href="@{/user/{id}(id=${user})}" role="button">Oma profiili</a>
 		<table class="table table-striped table-hover">
 			<tr>
 				<th>Nimi</th>

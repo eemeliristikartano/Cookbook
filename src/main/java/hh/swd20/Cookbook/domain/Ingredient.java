@@ -1,5 +1,6 @@
 package hh.swd20.Cookbook.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,16 +22,10 @@ public class Ingredient {
 	@Column(nullable = false)
 	private String name;
 	
-//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ingredient")
-//	private List<Amount> amounts;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonIgnoreProperties("ingredients")
 	@JoinColumn(name = "amountId")
 	private Amount amount;
-	
-//	@ManyToMany(mappedBy = "ingredients")
-//	private Set<Food> foods = new HashSet<Food>();
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnoreProperties("ingredients")

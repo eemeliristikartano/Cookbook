@@ -1,14 +1,13 @@
 package hh.swd20.Cookbook.web;
 
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,6 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import hh.swd20.Cookbook.domain.Amount;
 import hh.swd20.Cookbook.domain.AmountRepository;
 import hh.swd20.Cookbook.domain.CategoryRepository;
@@ -26,6 +28,7 @@ import hh.swd20.Cookbook.domain.Food;
 import hh.swd20.Cookbook.domain.FoodRepository;
 import hh.swd20.Cookbook.domain.Ingredient;
 import hh.swd20.Cookbook.domain.IngredientRepository;
+import hh.swd20.Cookbook.domain.UserRepository;
 
 /*
  * This controller contains methods for creating, reading, updating and deleting recipes.
@@ -43,13 +46,17 @@ public class FoodController {
 	private AmountRepository arepository;
 	@Autowired
 	private CategoryRepository crepository;
+	@Autowired
+	private UserRepository urepository;
 	
 	/*
 	 *Index endpoint contains list of recipes from DB. It is visible to everyone.
 	 */
 	@GetMapping("/")
-	public String index(Model model) {
-		model.addAttribute("foods", frepository.findAll());
+	public String index(Model model, Principal p) {
+		model.addAttribute("user", urepository.findByUsername(p.getName()).getUserId());
+		//Only recipes that have been accepted by the admin.
+		model.addAttribute("foods", frepository.findAllByStatus("O"));
 		return "index";
 	}
 	
@@ -66,6 +73,7 @@ public class FoodController {
 	}
 	
 	@GetMapping("/addrecipe")
+	@PreAuthorize("hasAuthority('USER')")
 	public String addNewFood() {
 		return "newfoodform";
 	}
@@ -76,14 +84,14 @@ public class FoodController {
 	
 	@CrossOrigin
 	@PostMapping("/saverecipe")
-	public @ResponseBody String saveNewFood(@RequestBody String foodFromRest) {
+	@PreAuthorize("hasAuthority('USER')")
+	public @ResponseBody String saveNewFood(@RequestBody String foodFromRest, Principal p) {
 		List<Ingredient> ingredients = new ArrayList<Ingredient>();
 		//Creates jsonobject from string.
 		JsonObject jsonFood = JsonParser.parseString(foodFromRest).getAsJsonObject();
 		Food food = new Food();
-		//:TODO when security is enabled add real user.
 		//Using setters to set values for food.
-		food.setUser(null);
+		food.setUser(urepository.findByUsername(p.getName()));
 		food.setName(jsonFood.get("name").getAsString());
 		food.setInstructions(jsonFood.get("instructions").getAsString());
 		food.setDateCreated(LocalDate.now());
@@ -126,8 +134,9 @@ public class FoodController {
 			frepository.save(food);
 			ingredient.setFood(food);
 			irepository.save(ingredient);
-		}		
-		return "redirect:/";
+		}
+	
+		return "redirect://";
 	}
 	
 	

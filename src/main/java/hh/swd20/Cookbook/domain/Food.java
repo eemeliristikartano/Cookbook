@@ -44,13 +44,6 @@ public class Food {
 	@JoinColumn(name = "userId")
 	private User user;
 	
-//	@ManyToMany(cascade = CascadeType.PERSIST)
-//	@JoinTable(name = "Belong",
-//			joinColumns = {@JoinColumn(name="foodId")},
-//			inverseJoinColumns = {@JoinColumn(name="ingredientId")}
-//			)
-//	private Set<Ingredient> ingredients = new HashSet<Ingredient>();
-	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "food")
 	private List<Ingredient> ingredients;
 	

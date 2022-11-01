@@ -8,7 +8,8 @@
 </head>
 <body>	
 	<div style="max-width: 75%; margin: auto">
-		<h1 th:text="${food.name}"></h1> 
+		<h1 th:text="${food.name}"></h1>
+		<h2 th:text="${food.category} ? ${food.category.name} : ''"></h2> 
 		<a class="btn btn-primary" href="/" role="button">Etusivu</a>
 		<br>
 		<h2>Ainesosat</h2>
@@ -22,7 +23,8 @@
 		<h2>Ohjeet</h2>
 			<p th:text="${food.instructions}"></p>
 			<br>
-			<p th:text="'Resepti lisätty ' + ${#temporals.format(food.dateCreated, 'dd.MM.yyyy')} + ' käyttäjän ' + ' toimesta.'"></p>
+			<p th:text="'Lähde: ' + ${food.source}"></p>
+			<p th:text="${food.user} ? 'Resepti lisätty ' + ${#temporals.format(food.dateCreated, 'dd.MM.yyyy')} + ' käyttäjän ' + ${food.user.username} + ' toimesta.' : 'Resepti lisätty ' +  ${#temporals.format(food.dateCreated, 'dd.MM.yyyy')} + '.'"></p>
 			<a class="btn btn-primary" href="/" role="button">Etusivu</a>
 	</div>
 	

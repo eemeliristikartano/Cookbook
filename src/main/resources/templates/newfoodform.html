@@ -4,11 +4,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+  <link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
   <title>Reseptin lisäys</title>
 </head>
 
 <body>
+
   <!-- We will put our React component inside this div. -->
   <div id="root"></div>
 
@@ -97,6 +98,7 @@
               placeholder="Nimi"
               value={food.name}
               onChange={handleChange}
+			  required="required"
             />
             <input
               type="text"
@@ -104,6 +106,7 @@
               placeholder="Ohjeet"
               value={food.instructions}
               onChange={handleChange}
+			  required="required"
             />
             <select name="category" value={food.category} onChange={handleChange}>
               <option></option>
