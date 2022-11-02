@@ -1,8 +1,11 @@
 package hh.swd20.Cookbook.web;
 
+import java.security.Principal;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import hh.swd20.Cookbook.domain.FoodRepository;
 import hh.swd20.Cookbook.domain.SignupForm;
 import hh.swd20.Cookbook.domain.User;
 import hh.swd20.Cookbook.domain.UserRepository;
@@ -20,6 +24,8 @@ public class UserController {
 	
 	@Autowired
 	private UserRepository urepository;
+	@Autowired
+	private FoodRepository frepository;
 	
 	@GetMapping("/login")
 	public String login() {
@@ -60,9 +66,11 @@ public class UserController {
 		return "redirect:/login";
 	}
 	
-	@GetMapping("/user/{userId}")
-	public String userPage(Model model) {
-		//TODO
+	@GetMapping("/user")
+	@PreAuthorize("hasAuthority('USER')")
+	public String userPage(Model model, Principal p) {
+		User user = urepository.findByUsername(p.getName());
+		model.addAttribute("foods", frepository.findAllByUser(user));
 		return "userpage";
 	}
 	

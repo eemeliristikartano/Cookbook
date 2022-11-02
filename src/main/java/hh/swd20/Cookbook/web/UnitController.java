@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import hh.swd20.Cookbook.domain.AmountRepository;
+import hh.swd20.Cookbook.domain.UnitRepository;
 
 @CrossOrigin
 @Controller
-public class AmountController {
+public class UnitController {
 	
-	@Autowired AmountRepository arepository;
+	@Autowired
+	private UnitRepository unrepository;
 	
 	@GetMapping("/units")
 	public @ResponseBody List<String> unitsRest() {
-		return (List<String>) arepository.findAllUnits();
+		return (List<String>) unrepository.findAllUnits();
 	}
-
 }

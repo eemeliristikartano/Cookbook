@@ -28,6 +28,8 @@ import hh.swd20.Cookbook.domain.Food;
 import hh.swd20.Cookbook.domain.FoodRepository;
 import hh.swd20.Cookbook.domain.Ingredient;
 import hh.swd20.Cookbook.domain.IngredientRepository;
+import hh.swd20.Cookbook.domain.UnitRepository;
+import hh.swd20.Cookbook.domain.User;
 import hh.swd20.Cookbook.domain.UserRepository;
 
 /*
@@ -48,13 +50,14 @@ public class FoodController {
 	private CategoryRepository crepository;
 	@Autowired
 	private UserRepository urepository;
+	@Autowired
+	private UnitRepository unrepository;
 	
 	/*
 	 *Index endpoint contains list of recipes from DB. It is visible to everyone.
 	 */
 	@GetMapping("/")
 	public String index(Model model, Principal p) {
-		model.addAttribute("user", urepository.findByUsername(p.getName()).getUserId());
 		//Only recipes that have been accepted by the admin.
 		model.addAttribute("foods", frepository.findAllByStatus("O"));
 		return "index";
@@ -117,7 +120,7 @@ public class FoodController {
 			
 			 // Set amount and unit for the amount
 			amount.setAmount(amountFromJson);
-			amount.setUnit(unitFromJson);
+			amount.setUnit(unrepository.findByUnit(unitFromJson));
 			arepository.save(amount);
 			
 			//Set name for the ingredient.
@@ -136,15 +139,21 @@ public class FoodController {
 			irepository.save(ingredient);
 		}
 	
-		return "redirect://";
+		return "redirect:/";
 	}
 	
 	
 	
 	@GetMapping("/deleterecipe/{id}")
-	public String deleteRecipe(@PathVariable("id") Long foodId) {
-		frepository.deleteById(foodId);
-		return "redirect:/";
+	@PreAuthorize("hasAuthority('USER')")
+	public String deleteRecipe(@PathVariable("foodId") Long foodId, Principal p) {
+		User user = urepository.findByUsername(p.getName());
+		Food food = frepository.findById(foodId).get();
+		if (food.getUser().getUserId().equals(user.getUserId())) {
+			frepository.deleteById(foodId);
+			return "redirect:/user";
+		}
+		return "notallowed";
 	}
 	
 	/*
@@ -154,11 +163,17 @@ public class FoodController {
 	 */
 	
 	@GetMapping("/editrecipe/{id}")
-	public String updateRecipe(@PathVariable("id") Long foodId, Model model) {
-		model.addAttribute("food", frepository.findById(foodId).get());
-		model.addAttribute("categories", crepository.findAll());
-		model.addAttribute("ingredients", frepository.findById(foodId).get().getIngredients());
-		return "updaterecipe";
+	@PreAuthorize("hasAuthority('USER')")
+	public String updateRecipe(@PathVariable("id") Long foodId, Model model, Principal p) {
+		User user = urepository.findByUsername(p.getName());
+		Food food = frepository.findById(foodId).get();
+		if (food.getUser().getUserId().equals(user.getUserId())) {
+			model.addAttribute("food", food);
+			model.addAttribute("categories", crepository.findAll());
+			model.addAttribute("ingredients", food.getIngredients());
+			return "updaterecipe";
+		} 
+		return "notallowed";
 	}
 	
 	/*
@@ -167,13 +182,18 @@ public class FoodController {
 	 */
 	
 	@PostMapping("/updaterecipe")
-	public String updateRecipe(@ModelAttribute Food food) {
-		food.setIngredients(frepository.findById(food.getFoodId()).get().getIngredients());
-		food.setDateEdited(LocalDate.now());
-		food.setStatus("I");
-		food.setUser(null);
-		frepository.save(food);
-		return "redirect:/";
+	@PreAuthorize("hasAuthority('USER')")
+	public String updateRecipe(@ModelAttribute Food food, Principal p) {
+		User user = urepository.findByUsername(p.getName());
+		if (food.getUser().getUserId().equals(user.getUserId())) {
+			food.setIngredients(frepository.findById(food.getFoodId()).get().getIngredients());
+			food.setDateEdited(LocalDate.now());
+			food.setStatus("I");
+			food.setUser(user);
+			frepository.save(food);
+			return "redirect:/user";
+		}
+		return "notallowed";
 	}
 	
 	

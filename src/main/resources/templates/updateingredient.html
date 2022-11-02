@@ -1,28 +1,26 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<title>Muokkaa ainesosaa</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
-</head>
-<body>
-	<h1 style="margin: auto; text-align: center;">Muokkaa ainesosaa</h1>
-	<div style="max-width: 50%; margin: auto">
-		<form action="#" th:action="@{/updateingredient}" th:object="${ingredient}"  method="post">
-				<input type="hidden" th:field="*{ingredientId}" />
-				<input type="hidden" th:field="*{food.foodId}" />
-				<input type="hidden" th:field="*{amount.amountId}" />
-				<p>Nimi: <input th:field="*{name}" type="text"> </p>   		
-		    	<p>Määrä: <input th:field="*{amount.amount}" > </p>	
-		    	<label for="deplist">Yksikkö</label>
-					<select id="deplist" th:field="*{amount.unit}" class="form-control">
-						<option th:value="${''}"></option>
-		       			<option th:each="unit: ${units}" th:value="${unit}" th:text="${unit}"></option>
-		    		</select> <br>
-				<input type="submit" value="Tallenna">
-			</form>
-		</div>
-
-</body>
+	<head>
+		<title>Muokkaa ainesosaa</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+	</head>
+	<body>
+		<div style="max-width: 50%; margin: auto">
+		<h1 style="margin: auto; text-align: center;">Muokkaa ainesosaa</h1>
+			<form action="#" th:action="@{/updateingredient}" th:object="${ingredient}"  method="post">
+					<input type="hidden" th:field="*{ingredientId}" />
+					<input type="hidden" th:field="*{food.foodId}" />
+					<input type="hidden" th:field="*{amount.amountId}" />
+					<p>Nimi: <input th:field="*{name}" type="text"> </p>   		
+			    	<p>Määrä: <input th:field="*{amount.amount}" > </p>	
+			    	<label for="deplist">Yksikkö</label>
+						<select id="deplist" th:field="*{amount.unit}" class="form-control">
+			       			<option th:each="unit: ${units}" th:value="${unit.unitId}" th:text="${unit.unit}"></option>
+			    		</select> <br>
+					<input type="submit" value="Tallenna">
+				</form>
+			</div>
+	</body>
 </html>
