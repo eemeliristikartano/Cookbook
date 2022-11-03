@@ -98,7 +98,7 @@
               placeholder="Nimi"
               value={food.name}
               onChange={handleChange}
-			  required="required"
+              required="required"
             />
             <input
               type="text"
@@ -106,15 +106,14 @@
               placeholder="Ohjeet"
               value={food.instructions}
               onChange={handleChange}
-			  required="required"
+              required="required"
             />
             <select name="category" value={food.category} onChange={handleChange}>
-              <option></option>
-              {categories.map((category, indexForCategories) =>
+              {Object.keys(categories).map((key, indexForCategories) =>
                 <option
                   key={indexForCategories}
-
-                >{category}</option>)}
+                  value={categories[key].name}
+                >{categories[key].name}</option>)}
 
             </select >
             {inputFields.map((input, index) => {
@@ -135,12 +134,11 @@
                     onChange={e=>handleFormChange(index, e)}
                   />
                   <select name="unit" onChange={e=>handleFormChange(index, e)}>
-                    <option></option>
-                    {units.map((unit, indexForUnits) =>
+                    {Object.keys(units).map((key, indexForUnits) =>
                       <option
                         key={indexForUnits}
-                        value={food.unit}
-                      >{unit}</option>)}
+                        value={units[key].unit}
+                      >{units[key].unit}</option>)}
                   </select >
                 </div>
               )

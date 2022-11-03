@@ -16,7 +16,7 @@
 			<table class="table table-striped table-hover">
 				<tr th:each="ingredient : ${ingredients}">
 					<td th:text="${ingredient.name}">
-					<td th:each=" amount : ${ingredient.amount}" th:text="${amount.amount} + '' + ${amount.unit.unit}">
+					<td th:each=" amount : ${ingredient.amount}" th:text="${amount.unit.unit} ? ${amount.amount} + '' + ${amount.unit.unit} : ${amount.amount}">
 				</tr>
 			</table>
 			<br>

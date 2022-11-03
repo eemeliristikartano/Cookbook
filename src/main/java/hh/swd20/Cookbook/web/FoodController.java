@@ -25,6 +25,7 @@ import hh.swd20.Cookbook.domain.Amount;
 import hh.swd20.Cookbook.domain.AmountRepository;
 import hh.swd20.Cookbook.domain.CategoryRepository;
 import hh.swd20.Cookbook.domain.Food;
+import hh.swd20.Cookbook.domain.Food.Status;
 import hh.swd20.Cookbook.domain.FoodRepository;
 import hh.swd20.Cookbook.domain.Ingredient;
 import hh.swd20.Cookbook.domain.IngredientRepository;
@@ -59,7 +60,7 @@ public class FoodController {
 	@GetMapping("/")
 	public String index(Model model, Principal p) {
 		//Only recipes that have been accepted by the admin.
-		model.addAttribute("foods", frepository.findAllByStatus("O"));
+		model.addAttribute("foods", frepository.findAllByStatus(Status.APPROVED));
 		return "index";
 	}
 	
@@ -92,6 +93,7 @@ public class FoodController {
 		List<Ingredient> ingredients = new ArrayList<Ingredient>();
 		//Creates jsonobject from string.
 		JsonObject jsonFood = JsonParser.parseString(foodFromRest).getAsJsonObject();
+		System.out.println(jsonFood);
 		Food food = new Food();
 		//Using setters to set values for food.
 		food.setUser(urepository.findByUsername(p.getName()));
@@ -99,7 +101,7 @@ public class FoodController {
 		food.setInstructions(jsonFood.get("instructions").getAsString());
 		food.setDateCreated(LocalDate.now());
 		//Set status to "I" so admin can check it before it is public to users.
-		food.setStatus("I");
+		food.setStatus(Status.REVIEW);
 		food.setCategory(crepository.findByName(jsonFood.get("category").getAsString()));
 		food.setSource(jsonFood.get("source").getAsString());
 		
@@ -144,7 +146,7 @@ public class FoodController {
 	
 	
 	
-	@GetMapping("/deleterecipe/{id}")
+	@GetMapping("/deleterecipe/{foodId}")
 	@PreAuthorize("hasAuthority('USER')")
 	public String deleteRecipe(@PathVariable("foodId") Long foodId, Principal p) {
 		User user = urepository.findByUsername(p.getName());
@@ -188,7 +190,7 @@ public class FoodController {
 		if (food.getUser().getUserId().equals(user.getUserId())) {
 			food.setIngredients(frepository.findById(food.getFoodId()).get().getIngredients());
 			food.setDateEdited(LocalDate.now());
-			food.setStatus("I");
+			food.setStatus(Status.REVIEW);
 			food.setUser(user);
 			frepository.save(food);
 			return "redirect:/user";

@@ -23,10 +23,10 @@ public class WebSecurityConfig {
 		http
 		.authorizeRequests()
 			.antMatchers("/css/**").permitAll()
-			.antMatchers("/", "/signup", "/saveuser", "/recipe/**").permitAll()
+			.antMatchers("/", "/signup", "/saveuser", "/recipe/**", "/categories", "/units").permitAll()
 			.anyRequest().authenticated()
 			.and()
-		.csrf().ignoringAntMatchers("/h2-console/**", "/saverecipe/**")
+		.csrf().ignoringAntMatchers("/h2-console/**", "/saverecipe/**", "/categories", "/units")
 		.and()
 		.headers().frameOptions().sameOrigin().and()
 		.formLogin()

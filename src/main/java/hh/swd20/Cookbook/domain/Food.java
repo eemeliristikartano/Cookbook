@@ -3,10 +3,11 @@ package hh.swd20.Cookbook.domain;
 import java.time.LocalDate;
 import java.util.List;
 
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,7 +29,14 @@ public class Food {
 	private String instructions;
 	private LocalDate dateCreated;
 	private LocalDate dateEdited;
-	private String status;
+	
+	public enum Status{
+		REVIEW, APPROVED;
+	}
+	
+	@Enumerated(EnumType.STRING)
+	private Status status;
+	
 	private String source;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "food")
@@ -49,7 +57,7 @@ public class Food {
 	
 	public Food() {}
 
-	public Food(String name, String instructions, LocalDate dateCreated, LocalDate dateEdited, String status,
+	public Food(String name, String instructions, LocalDate dateCreated, LocalDate dateEdited, Status status,
 			String source, List<Review> reviews, Category category, User user, List<Ingredient> ingredients) {
 		super();
 		this.name = name;
@@ -104,11 +112,11 @@ public class Food {
 		this.dateEdited = dateEdited;
 	}
 
-	public String getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 

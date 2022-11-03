@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import hh.swd20.Cookbook.domain.Amount;
 import hh.swd20.Cookbook.domain.AmountRepository;
 import hh.swd20.Cookbook.domain.Food;
+import hh.swd20.Cookbook.domain.Food.Status;
 import hh.swd20.Cookbook.domain.FoodRepository;
 import hh.swd20.Cookbook.domain.Ingredient;
 import hh.swd20.Cookbook.domain.IngredientRepository;
@@ -107,7 +108,7 @@ public class IngredientController {
 		User user = urepository.findByUsername(p.getName());
 		Food food = frepository.findById(foodId).get();
 		if (food.getUser().getUserId().equals(user.getUserId())) {
-			food.setStatus("I");
+			food.setStatus(Status.REVIEW);
 			food.setDateEdited(LocalDate.now());
 			frepository.save(food);
 			arepository.save(ingredient.getAmount());

@@ -7,18 +7,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import hh.swd20.Cookbook.domain.Unit;
 import hh.swd20.Cookbook.domain.UnitRepository;
 
 @CrossOrigin
-@Controller
+@RestController
 public class UnitController {
 	
 	@Autowired
 	private UnitRepository unrepository;
 	
 	@GetMapping("/units")
-	public @ResponseBody List<String> unitsRest() {
-		return (List<String>) unrepository.findAllUnits();
+	public List<Unit> unitsRest() {
+		return (List<Unit>) unrepository.findAll();
+	
 	}
 }
