@@ -31,5 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-/src/main/java/hh/swd20/Cookbook/CookbookApplication.java

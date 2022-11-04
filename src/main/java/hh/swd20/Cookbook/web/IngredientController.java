@@ -49,14 +49,18 @@ public class IngredientController {
 	@GetMapping("/editingredient/{id}")
 	@PreAuthorize("hasAuthority('USER')")
 	public String updateIngredient(@PathVariable("id") Long ingredientId, Model model, Principal p) {
-		User user = urepository.findByUsername(p.getName());
-		Food food = irepository.findById(ingredientId).get().getFood();
-		if (food.getUser().getUserId().equals(user.getUserId())) {
-			model.addAttribute("ingredient", irepository.findById(ingredientId).get());
-			model.addAttribute("units", unrepository.findAll());
-			return "updateingredient";
+		try {
+			User user = urepository.findByUsername(p.getName());
+			Food food = irepository.findById(ingredientId).get().getFood();
+			if (food.getUser().getUserId().equals(user.getUserId())) {
+				model.addAttribute("ingredient", irepository.findById(ingredientId).get());
+				model.addAttribute("units", unrepository.findAll());
+				return "updateingredient";
+			}
+			return "notallowed";
+		} catch (NullPointerException e) {
+			return "somethingwentwrong";
 		}
-		return "notallowed";
 	}
 	
 	/*
@@ -66,18 +70,22 @@ public class IngredientController {
 	@PostMapping("/updateingredient")
 	@PreAuthorize("hasAuthority('USER')")
 	public String updateIngredient(@ModelAttribute Ingredient ingredient, Principal p) {
-		User user = urepository.findByUsername(p.getName());
-		Food food = frepository.findById(ingredient.getFood().getFoodId()).get();
-		Unit unit = ingredient.getAmount().getUnit();
-		Amount amount = ingredient.getAmount();
-		System.out.println(amount);
-		if (food.getUser().getUserId().equals(user.getUserId())) {
-			amount.setUnit(unit);
-			arepository.save(amount);
-			irepository.save(ingredient);
-			return "redirect:/editrecipe/" + food.getFoodId();
+		try {
+			User user = urepository.findByUsername(p.getName());
+			Food food = frepository.findById(ingredient.getFood().getFoodId()).get();
+			Unit unit = ingredient.getAmount().getUnit();
+			Amount amount = ingredient.getAmount();
+			System.out.println(amount);
+			if (food.getUser().getUserId().equals(user.getUserId())) {
+				amount.setUnit(unit);
+				arepository.save(amount);
+				irepository.save(ingredient);
+				return "redirect:/editrecipe/" + food.getFoodId();
+			}
+			return "notallowed";
+		} catch (NullPointerException e) {
+			return "somethingwentwrong";
 		}
-		return "notallowed";
 	}
 	
 	/*
@@ -87,15 +95,19 @@ public class IngredientController {
 	@GetMapping("/addingredient/{foodId}")
 	@PreAuthorize("hasAuthority('USER')")
 	public String addIngredient(@PathVariable("foodId") Long foodId, Model model, Principal p) {
-		User user = urepository.findByUsername(p.getName());
-		Food food = frepository.findById(foodId).get();
-		if (food.getUser().getUserId().equals(user.getUserId())) {
-			model.addAttribute("food", food);
-			model.addAttribute("ingredient", new Ingredient());
-			model.addAttribute("units", unrepository.findAll());
-			return "newingredient";
+		try {
+			User user = urepository.findByUsername(p.getName());
+			Food food = frepository.findById(foodId).get();
+			if (food.getUser().getUserId().equals(user.getUserId())) {
+				model.addAttribute("food", food);
+				model.addAttribute("ingredient", new Ingredient());
+				model.addAttribute("units", unrepository.findAll());
+				return "newingredient";
+			}
+			return "notallowed";
+		} catch (NullPointerException e) {
+			return "somethingwentwrong";
 		}
-		return "notallowed";
 	}
 	
 	/*
@@ -105,31 +117,39 @@ public class IngredientController {
 	@PostMapping("/saveingredient/{foodId}")
 	@PreAuthorize("hasAuthority('USER')")
 	public String saveIngredient(@ModelAttribute Ingredient ingredient, @PathVariable("foodId") Long foodId, Principal p) {
-		User user = urepository.findByUsername(p.getName());
-		Food food = frepository.findById(foodId).get();
-		if (food.getUser().getUserId().equals(user.getUserId())) {
-			food.setStatus(Status.REVIEW);
-			food.setDateEdited(LocalDate.now());
-			frepository.save(food);
-			arepository.save(ingredient.getAmount());
-			ingredient.setFood(food);
-			irepository.save(ingredient);	
-			return "redirect:/editrecipe/" + food.getFoodId();
+		try {
+			User user = urepository.findByUsername(p.getName());
+			Food food = frepository.findById(foodId).get();
+			if (food.getUser().getUserId().equals(user.getUserId())) {
+				food.setStatus(Status.REVIEW);
+				food.setDateEdited(LocalDate.now());
+				frepository.save(food);
+				arepository.save(ingredient.getAmount());
+				ingredient.setFood(food);
+				irepository.save(ingredient);	
+				return "redirect:/editrecipe/" + food.getFoodId();
+			}
+			return "notallowed";
+		} catch (NullPointerException e) {
+			return "somethingwentwrong";
 		}
-		return "notallowed";
 	}
 	
 	@GetMapping("/deleteingredient/{ingredientId}")
 	@PreAuthorize("hasAuthority('USER')")
 	public String deleteIngredient(@PathVariable("ingredientId") Long ingredientId, Principal p) {
-		Ingredient ingredient = irepository.findById(ingredientId).get();
-		User user = urepository.findByUsername(p.getName());
-		Food food = ingredient.getFood();
-		if (food.getUser().getUserId().equals(user.getUserId())) {
-			irepository.deleteById(ingredientId);
-			return "redirect:/editrecipe/" + food.getFoodId();
+		try {
+			Ingredient ingredient = irepository.findById(ingredientId).get();
+			User user = urepository.findByUsername(p.getName());
+			Food food = ingredient.getFood();
+			if (food.getUser().getUserId().equals(user.getUserId())) {
+				irepository.deleteById(ingredientId);
+				return "redirect:/editrecipe/" + food.getFoodId();
+			}
+			return "notallowed";
+		} catch (NullPointerException e) {
+			return "somethingwentwrong";
 		}
-		return "notallowed";
 	}
 
 }

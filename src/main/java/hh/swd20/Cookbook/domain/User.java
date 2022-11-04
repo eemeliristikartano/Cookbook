@@ -26,9 +26,6 @@ public class User {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private List<Food> foods;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-	private List<Review> reviews;
-	
 	public User() {}
 
 	public User(String username, String passwordHash, String role) {
@@ -75,14 +72,6 @@ public class User {
 
 	public void setFoods(List<Food> foods) {
 		this.foods = foods;
-	}
-
-	public List<Review> getReviews() {
-		return reviews;
-	}
-
-	public void setReviews(List<Review> reviews) {
-		this.reviews = reviews;
 	}
 
 	@Override

@@ -69,9 +69,13 @@ public class UserController {
 	@GetMapping("/user")
 	@PreAuthorize("hasAuthority('USER')")
 	public String userPage(Model model, Principal p) {
-		User user = urepository.findByUsername(p.getName());
-		model.addAttribute("foods", frepository.findAllByUser(user));
-		return "userpage";
+		try {
+			User user = urepository.findByUsername(p.getName());
+			model.addAttribute("foods", frepository.findAllByUser(user));
+			return "userpage";
+		} catch (NullPointerException e) {
+			return "somethingwentwrong";
+		}
 	}
 	
 	

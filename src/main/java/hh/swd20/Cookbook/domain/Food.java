@@ -39,9 +39,6 @@ public class Food {
 	private Status status;
 	
 	private String source;
-	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "food")
-	private List<Review> reviews;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnoreProperties("foods")
@@ -59,7 +56,7 @@ public class Food {
 	public Food() {}
 
 	public Food(String name, String instructions, LocalDate dateCreated, LocalDate dateEdited, Status status,
-			String source, List<Review> reviews, Category category, User user, List<Ingredient> ingredients) {
+			String source, Category category, User user, List<Ingredient> ingredients) {
 		super();
 		this.name = name;
 		this.instructions = instructions;
@@ -67,7 +64,6 @@ public class Food {
 		this.dateEdited = dateEdited;
 		this.status = status;
 		this.source = source;
-		this.reviews = reviews;
 		this.category = category;
 		this.user = user;
 		this.ingredients = ingredients;
@@ -127,14 +123,6 @@ public class Food {
 
 	public void setSource(String source) {
 		this.source = source;
-	}
-
-	public List<Review> getReviews() {
-		return reviews;
-	}
-
-	public void setReviews(List<Review> reviews) {
-		this.reviews = reviews;
 	}
 
 	public Category getCategory() {

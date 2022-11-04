@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import hh.swd20.Cookbook.domain.Food.Status;
 import hh.swd20.Cookbook.domain.FoodRepository;
-import hh.swd20.Cookbook.domain.User;
 import hh.swd20.Cookbook.domain.UserRepository;
 
 @Controller
