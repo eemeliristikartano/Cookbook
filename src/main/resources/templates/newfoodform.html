@@ -22,7 +22,7 @@
   <!-- Load our React component. -->
   <script type="text/babel">
 
-    function GenerateForm() {
+    function HandleNewFood() {
       const [categories, setCategories] = React.useState([])
       const [units, setUnits] = React.useState([])
       const [food, setFood] = React.useState({
@@ -77,18 +77,26 @@
 
       React.useEffect(() => {
         fetch("http://localhost:8080/units")
-          .then(response => response.json())
+          .then(response => {
+            if (response.ok)
+              return response.json()
+            alert("Jokin meni vikaan yksikköjen haussa.")
+          })
           .then(data => setUnits(data));
       }, []);
 
       React.useEffect(() => {
         fetch("http://localhost:8080/categories")
-          .then(response => response.json())
+          .then(response => {
+            if (response.ok)
+              return response.json()
+            alert("Jokin meni vikaan kategorien haussa.")
+          })
           .then(data => setCategories(data));
       }, []);
 
       return (
-        <div>
+        <div style={{display:'grid', alignItems:'center', justifyContent:'center',}}>
           <h1>Lisää uusi resepti</h1>
           <p>Anna reseptin nimi, ohjeet, sekä lähde jos sellainen on. Pudotusvalikoista saat valittua kategorian sekä yksikön.<br />Ainesosia voit lisätä + painikkeesta. Kun olet valmis, paina lähetä.</p>
           <form onSubmit={submit} action="http://localhost:8080/">
@@ -100,22 +108,28 @@
               onChange={handleChange}
               required="required"
             />
-            <input
-              type="text"
-              name="instructions"
-              placeholder="Ohjeet"
-              value={food.instructions}
-              onChange={handleChange}
-              required="required"
-            />
-            <select name="category" value={food.category} onChange={handleChange}>
+            {' '}Kategoria: <select
+              name="category"
+              value={food.category}
+              onChange={handleChange}>
               {Object.keys(categories).map((key, indexForCategories) =>
                 <option
                   key={indexForCategories}
                   value={categories[key].name}
                 >{categories[key].name}</option>)}
-
             </select >
+            <br></br>
+            <textarea
+              rows="8"
+              cols="50"
+              type="text"
+              name="instructions"
+              maxLength="2000"
+              placeholder="Ohjeet. Max 2000 merkkiä."
+              value={food.instructions}
+              onChange={handleChange}
+              required="required"
+            /> <br></br>  {`Merkkien määrä ohjeissa: ${food.instructions.length} (max 2000)`}
             {inputFields.map((input, index) => {
               return (
                 <div key={index}>
@@ -133,7 +147,9 @@
                     value={food.amount}
                     onChange={e=>handleFormChange(index, e)}
                   />
-                  <select name="unit" onChange={e=>handleFormChange(index, e)}>
+                  <select
+                    name="unit"
+                    onChange={e=>handleFormChange(index, e)}>
                     {Object.keys(units).map((key, indexForUnits) =>
                       <option
                         key={indexForUnits}
@@ -153,8 +169,8 @@
             <br />
 
             <input type="submit" value="Lähetä" />
-          </form > <button onClick={addFields}>+</button>
-
+          </form >
+          <button style={{width:'50%'}} onClick={addFields}>+</button>
         </div >);
 
     }
@@ -162,7 +178,7 @@
 
 
     const root = ReactDOM.createRoot(document.getElementById("root"));
-    root.render(<GenerateForm />);
+    root.render(<HandleNewFood />);
 
 
 

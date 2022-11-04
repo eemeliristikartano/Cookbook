@@ -29,7 +29,12 @@
 							    <td th:text="${ingredient.name}">Author</td>
 							    <td th:text="${ingredient.amount.amount} + ' ' + ${ingredient.amount.unit.unit}">
 							    <td><a class="btn btn-secondary" th:href="@{/editingredient/{id}(id=${ingredient.ingredientId})}">Muokkaa</a></td>
-							    <td><a class="btn btn-danger" th:href="@{/deleteingredient/{id}(id=${ingredient.ingredientId})}">Poista</a></td>
+							    <td><a 
+							    	class="btn btn-danger" 
+							    	th:href="@{/deleteingredient/{id}(id=${ingredient.ingredientId})}"
+							    	th:data-confirm-delete="|Haluatko varmasti poistaa seuraavan ainesosan: ${ingredient.name} ${ingredient.amount.amount} ${ingredient.amount.unit.unit}?|"
+							    	onclick="return confirm(this.getAttribute('data-confirm-delete'))"
+							    	>Poista</a></td>
 							  </tr>
 						</table>
 						<p><a class="btn btn-secondary" th:href="@{/addingredient/{id}(id=${food.foodId})}">Lisää uusi ainesosa</a></p>    									

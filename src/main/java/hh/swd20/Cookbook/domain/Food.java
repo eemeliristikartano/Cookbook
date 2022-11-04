@@ -26,6 +26,7 @@ public class Food {
 	private Long foodId;
 	@Column(nullable = false)
 	private String name;
+	@Column(length = 2000)
 	private String instructions;
 	private LocalDate dateCreated;
 	private LocalDate dateEdited;

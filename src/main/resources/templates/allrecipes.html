@@ -1,29 +1,31 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<head>
-		<title>Reseptikirja</title>
+		<title>Reseptit</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
 	</head>
 	<body>
-		<div style="max-width: 50%; margin: auto">
+		<div style="max-width: 50%; margin: auto" sec:authorize="hasAuthority('ADMIN')">
 			<h1 style="margin: auto; text-align: center;">Reseptit</h1>
-			<div sec:authorize="isAuthenticated()">
-				<form th:action="@{/logout}" method="post">
-					<input type="submit" value="Kirjaudu ulos" class="btn btn-sm btn-danger"/>
-				</form>
-			</div>				
-			<a sec:authorize="isAnonymous()" class="btn btn-primary" href="/login" role="button">Kirjaudu sisään</a>
-			<a sec:authorize="hasAuthority('USER')" class="btn btn-primary" href="/addrecipe" >Lisää resepti</a>
-			<a sec:authorize="hasAuthority('USER')" class="btn btn-primary" href="/user" >Omat reseptit</a>
-			<a sec:authorize="hasAuthority('ADMIN')" class="btn btn-primary" href="/admin" >Adminsivu</a>
+			<a  class="btn btn-primary" href="/admin" role="button">Adminsivu</a>
 			<table class="table table-striped table-hover">
 				<tr>
 					<th>Nimi</th>
+					<th>Status</th>
+					<th></th>
 				</tr>
 				<tr th:each="food : ${foods}">
 					<td><a th:href="@{/recipe/{id}(id=${food.foodId})}" th:text="${food.name}"></a></td>
+					<td th:text="${food.status}">
+					<td>
+						<a 
+						class="btn btn-danger" 
+						th:href="@{/delete/{id}(id=${food.foodId})}"
+						th:data-confirm-delete="|Haluatko varmasti poistaa seuraavan ruuan: ${food.name}?|"
+						onclick="return confirm(this.getAttribute('data-confirm-delete'))"
+						>Poista</a></td>
 				</tr>
 			</table>
 		</div>

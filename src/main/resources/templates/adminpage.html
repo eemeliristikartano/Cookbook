@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	<head>
+		<title>Admin</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+	</head>
+	<body>
+		<div sec:authorize="hasAuthority('ADMIN')" style="max-width: 50%; margin: auto">
+			<h1 style="margin: auto; text-align: center;">Admin</h1>
+			<div sec:authorize="isAuthenticated()">
+				<form th:action="@{/logout}" method="post">
+					<input type="submit" value="Kirjaudu ulos" class="btn btn-sm btn-danger"/>
+				</form>
+			</div>				
+			<a sec:authorize="hasAuthority('ADMIN')" class="btn btn-primary" href="/allrecipes" role="button">Kaikki reseptit</a>
+			<a sec:authorize="hasAuthority('ADMIN')" class="btn btn-primary" href="/reviewrecipes" role="button" >Tarkistusta odottavat reseptit</a>
+			<a sec:authorize="hasAuthority('ADMIN')" class="btn btn-primary" href="/users" role="button" >Käyttäjät</a>
+			<a sec:authorize="hasAuthority('ADMIN')" class="btn btn-primary" href="/" role="button" >Etusivu</a>
+		
+		</div>
+	</body>
+	</html>

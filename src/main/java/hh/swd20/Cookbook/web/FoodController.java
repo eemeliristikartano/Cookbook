@@ -197,7 +197,6 @@ public class FoodController {
 		}
 		return "notallowed";
 	}
-	
-	
+		
 	
 }

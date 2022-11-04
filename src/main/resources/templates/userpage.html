@@ -20,8 +20,14 @@
 				<tr th:each = "food : ${foods}">
 					<td>
 						<a th:href="@{/recipe/{id}(id=${food.foodId})}" th:text="${food.name}"></a>
-	    				<td><a class="btn btn-secondary" th:href="@{/editrecipe/{id}(id=${food.foodId})}">Edit</a>
-	    				<td sec:authorize="hasAuthority('USER')"><a th:href="@{/deleterecipe/{id}(id=${food.foodId})}" class="btn btn-xs btn-danger">Delete</a></td>
+	    				<td sec:authorize="hasAuthority('USER')"><a class="btn btn-secondary" th:href="@{/editrecipe/{id}(id=${food.foodId})}">Edit</a>
+	    				<td 
+	    					sec:authorize="hasAuthority('USER')">
+	    					<a th:href="@{/deleterecipe/{id}(id=${food.foodId})}" 
+	    						class="btn btn-xs btn-danger"
+	    						th:data-confirm-delete="|Haluatko varmasti poistaa seuraavan ruuan: ${food.name}?|"
+							    onclick="return confirm(this.getAttribute('data-confirm-delete'))"
+	    						>Delete</a>
 					</td>
 				</tr>
 			</table>
