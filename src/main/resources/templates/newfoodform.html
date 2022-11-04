@@ -66,7 +66,7 @@
       }
 
       const submit = (e) => {
-        fetch("https://reseptit.herokuapp.com//saverecipe", {
+        fetch("https://reseptit.herokuapp.com/saverecipe", {
           method: "POST",
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(food)
