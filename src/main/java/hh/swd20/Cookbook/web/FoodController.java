@@ -143,7 +143,7 @@ public class FoodController {
 				irepository.save(ingredient);
 			}
 
-			return "redirect:/";
+			return "redirect:/user";
 			
 		} catch (JsonSyntaxException e) {
 			return "somethingwentwrong";
