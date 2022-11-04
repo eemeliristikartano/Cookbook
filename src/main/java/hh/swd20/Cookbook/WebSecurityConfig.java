@@ -28,7 +28,7 @@ public class WebSecurityConfig {
 			.and()
 			.exceptionHandling().accessDeniedPage("/notallowed")
 			.and()
-		.csrf().ignoringAntMatchers("/h2-console/**", "/saverecipe/**")
+		.csrf().ignoringAntMatchers("/saverecipe/**")
 		.and()
 		.headers().frameOptions().sameOrigin().and()
 		.formLogin()
