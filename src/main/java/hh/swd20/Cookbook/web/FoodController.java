@@ -88,7 +88,7 @@ public class FoodController {
 	 */
 	
 	@CrossOrigin
-	@PostMapping("https://reseptit.herokuapp.com/saverecipe")
+	@PostMapping("/saverecipe")
 	@PreAuthorize("hasAuthority('USER')")
 	public @ResponseBody String saveNewFood(@RequestBody String foodFromRest, Principal p) {
 		try {
