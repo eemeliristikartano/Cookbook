@@ -95,10 +95,10 @@
       }, []);
 
       return (
-        <div style={{display:'grid', alignItems:'center', justifyContent:'center',}}>
+        <div>
           <h1>Lisää uusi resepti</h1>
           <p>Anna reseptin nimi, ohjeet, sekä lähde jos sellainen on. Pudotusvalikoista saat valittua kategorian sekä yksikön.<br />Ainesosia voit lisätä + painikkeesta. Kun olet valmis, paina lähetä.
-			Lähettämisen jälkeen resepti siirtyy ylläpitäjän tarkistettavaksi.</p>
+			Lähettämisen jälkeen resepti siirtyy ylläpitäjän tarkistettavaksi. Lähettämisen jälkeen siirry napista 'Käyttäjä' eteenpäin.</p>
           <form onSubmit={submit}>
             <input
               type="text"
@@ -170,7 +170,7 @@
 
             <input type="submit" value="Lähetä" />
           </form >
-          <button style={{width:'50%'}} onClick={addFields}>+</button>
+          <button onClick={addFields}>+</button>
 		  <button><a href="/user">Käyttäjä</a></button>
         </div >);
 
