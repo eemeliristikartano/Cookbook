@@ -100,7 +100,7 @@
           <h1>Lisää uusi resepti</h1>
           <p>Anna reseptin nimi, ohjeet, sekä lähde jos sellainen on. Pudotusvalikoista saat valittua kategorian sekä yksikön.<br />Ainesosia voit lisätä + painikkeesta. Kun olet valmis, paina lähetä.
 			Lähettämisen jälkeen resepti siirtyy ylläpitäjän tarkistettavaksi.</p>
-          <form onSubmit={submit} action="https://reseptit.herokuapp.com/saverecipe">
+          <form onSubmit={submit} action="/saverecipe">
             <input
               type="text"
               name="name"
