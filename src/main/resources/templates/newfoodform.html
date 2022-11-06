@@ -69,7 +69,8 @@
         fetch("https://reseptit.herokuapp.com/saverecipe", {
           method: "POST",
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(food)
+          body: JSON.stringify(food),
+		  redirect: 'follow'
         })
 
       }
@@ -100,7 +101,7 @@
           <h1>Lisää uusi resepti</h1>
           <p>Anna reseptin nimi, ohjeet, sekä lähde jos sellainen on. Pudotusvalikoista saat valittua kategorian sekä yksikön.<br />Ainesosia voit lisätä + painikkeesta. Kun olet valmis, paina lähetä.
 			Lähettämisen jälkeen resepti siirtyy ylläpitäjän tarkistettavaksi.</p>
-          <form onSubmit={submit} action="/">
+          <form onSubmit={submit}>
             <input
               type="text"
               name="name"
