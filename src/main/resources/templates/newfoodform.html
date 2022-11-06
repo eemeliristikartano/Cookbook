@@ -71,7 +71,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(food)
         })
-
+		.then(response => window.location.href = "https://reseptit.herokuapp.com/user")
       }
 
 
