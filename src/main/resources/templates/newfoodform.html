@@ -71,7 +71,6 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(food)
         })
-		.then(response => window.location.href = "https://reseptit.herokuapp.com/user")
       }
 
 
@@ -172,6 +171,7 @@
             <input type="submit" value="Lähetä" />
           </form >
           <button style={{width:'50%'}} onClick={addFields}>+</button>
+		  <button><a href="/user">Käyttäjä</a></button>
         </div >);
 
     }
