@@ -28,7 +28,7 @@ public class WebSecurityConfig {
 			.and()
 			.exceptionHandling().accessDeniedPage("/notallowed")
 			.and()
-		.csrf().ignoringAntMatchers("https://reseptit.herokuapp.com/saverecipe/**")
+		.csrf().ignoringAntMatchers("/saverecipe/**")
 		.and()
 		.headers().frameOptions().sameOrigin().and()
 		.formLogin()
