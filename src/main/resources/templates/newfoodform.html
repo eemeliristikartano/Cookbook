@@ -45,7 +45,8 @@
         }
 
       ]);
-
+	  
+      //Adding inputfields for ingredients.
       const addFields = () => {
         const newField = {
           ingredient: "",
@@ -58,13 +59,15 @@
       const handleChange = (e) => {
         setFood({ ...food, [e.target.name]: e.target.value });
       }
-
+      
+      //Sets data to foods ingredients.
       const handleFormChange = (index, event) => {
         const data = [...inputFields];
         data[index][event.target.name] = event.target.value;
         setFood({ ...food, ingredients: data });
       }
-
+	  
+      //Send data to backend.
       const submit = (e) => {
         fetch("https://reseptit.herokuapp.com/saverecipe", {
           method: "POST",
@@ -73,7 +76,7 @@
         })
       }
 
-
+	  //Fetch units from database.
       React.useEffect(() => {
         fetch("https://reseptit.herokuapp.com/units")
           .then(response => {
@@ -84,6 +87,7 @@
           .then(data => setUnits(data));
       }, []);
 
+      //Fetch categories from database.
       React.useEffect(() => {
         fetch("https://reseptit.herokuapp.com/categories")
           .then(response => {
