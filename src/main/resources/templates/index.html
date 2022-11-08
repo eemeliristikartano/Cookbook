@@ -15,6 +15,7 @@
 				</form>
 			</div>				
 			<a sec:authorize="isAnonymous()" class="btn btn-primary" href="/login" role="button">Kirjaudu sisään</a>
+			<a sec:authorize="isAnonymous()" class="btn btn-primary" href="/signup" role="button">Rekisteröidy</a>
 			<a sec:authorize="hasAuthority('USER')" class="btn btn-primary" href="/addrecipe" >Lisää resepti</a>
 			<a sec:authorize="hasAuthority('USER')" class="btn btn-primary" href="/user" >Omat reseptit</a>
 			<a sec:authorize="hasAuthority('ADMIN')" class="btn btn-primary" href="/admin" >Adminsivu</a>
