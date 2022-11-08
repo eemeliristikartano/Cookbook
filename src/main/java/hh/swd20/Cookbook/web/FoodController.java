@@ -36,6 +36,7 @@ import hh.swd20.Cookbook.domain.UserRepository;
 
 /*
  * This controller contains methods for creating, reading, updating and deleting recipes.
+ * Endpoint / and /recipe/** are visible for everyone. Other endpoints needs authentication.
  */
 
 
@@ -77,6 +78,10 @@ public class FoodController {
 		return "recipe";
 	}
 	
+	/*
+	 * Endpoint for adding new recipe.
+	 */
+	
 	@GetMapping("/addrecipe")
 	@PreAuthorize("hasAuthority('USER')")
 	public String addNewFood() {
@@ -95,14 +100,13 @@ public class FoodController {
 			List<Ingredient> ingredients = new ArrayList<Ingredient>();
 			//Creates jsonobject from string.
 			JsonObject jsonFood = JsonParser.parseString(foodFromRest).getAsJsonObject();
-			System.out.println(jsonFood);
 			Food food = new Food();
 			//Using setters to set values for food.
 			food.setUser(urepository.findByUsername(p.getName()));
 			food.setName(jsonFood.get("name").getAsString());
 			food.setInstructions(jsonFood.get("instructions").getAsString());
 			food.setDateCreated(LocalDate.now());
-			//Set status to "I" so admin can check it before it is public to users.
+			//Set status to "REVIEW" so admin can check it before it is public to users.
 			food.setStatus(Status.REVIEW);
 			food.setCategory(crepository.findByName(jsonFood.get("category").getAsString()));
 			food.setSource(jsonFood.get("source").getAsString());
@@ -154,12 +158,18 @@ public class FoodController {
 		}
 	}
 	
-	
+	/*
+	 * Deleting recipe from database
+	 */
 	
 	@GetMapping("/deleterecipe/{foodId}")
 	@PreAuthorize("hasAuthority('USER')")
 	public String deleteRecipe(@PathVariable("foodId") Long foodId, Principal p) {
 		try {
+			/*
+			 * Checking if the user is owner of the recipe. If the user is
+			 * the owner, the recipe will be deleted.
+			 */
 			User user = urepository.findByUsername(p.getName());
 			Food food = frepository.findById(foodId).get();
 			if (food.getUser().getUserId().equals(user.getUserId())) {
@@ -168,6 +178,8 @@ public class FoodController {
 			}
 			return "notallowed";
 		} catch (NullPointerException e) {
+			return "somethingwentwrong";
+		} catch (Exception e) {
 			return "somethingwentwrong";
 		}
 	}
@@ -182,6 +194,10 @@ public class FoodController {
 	@PreAuthorize("hasAuthority('USER')")
 	public String updateRecipe(@PathVariable("id") Long foodId, Model model, Principal p) {
 		try {
+			/*
+			 * Checking if the user is owner of the recipe. If the user is
+			 * the owner, editing is allowed.
+			 */
 			User user = urepository.findByUsername(p.getName());
 			Food food = frepository.findById(foodId).get();
 			if (food.getUser().getUserId().equals(user.getUserId())) {
@@ -192,6 +208,8 @@ public class FoodController {
 			} 
 			return "notallowed";
 		} catch (NullPointerException e) {
+			return "somethingwentwrong";
+		} catch (Exception e) {
 			return "somethingwentwrong";
 		}
 	}
@@ -205,10 +223,15 @@ public class FoodController {
 	@PreAuthorize("hasAuthority('USER')")
 	public String updateRecipe(@ModelAttribute Food food, Principal p) {
 		try {
+			/*
+			 * Checking if the user is owner of the recipe. If the user is
+			 * the owner, editing is allowed.
+			 */
 			User user = urepository.findByUsername(p.getName());
 			if (food.getUser().getUserId().equals(user.getUserId())) {
 				food.setIngredients(frepository.findById(food.getFoodId()).get().getIngredients());
 				food.setDateEdited(LocalDate.now());
+				//Set status to "REVIEW" so admin can check it before it is public to users.
 				food.setStatus(Status.REVIEW);
 				food.setUser(user);
 				frepository.save(food);
@@ -216,6 +239,8 @@ public class FoodController {
 			}
 			return "notallowed";
 		} catch (NullPointerException e) {
+			return "somethingwentwrong";
+		} catch (Exception e) {
 			return "somethingwentwrong";
 		}
 	}

@@ -19,6 +19,11 @@ import hh.swd20.Cookbook.domain.SignupForm;
 import hh.swd20.Cookbook.domain.User;
 import hh.swd20.Cookbook.domain.UserRepository;
 
+/*
+ * Controller for signing up, logging in, savign a new user
+ * and for users page.
+ */
+
 @Controller
 public class UserController {
 	
@@ -27,17 +32,21 @@ public class UserController {
 	@Autowired
 	private FoodRepository frepository;
 	
+	
+	//Endpoint for logging in.
 	@GetMapping("/login")
 	public String login() {
 		return "login";
 	}
 	
+	//Endpoint for signing up.
 	@GetMapping("/signup")
 	public String addUser(Model model) {
 		model.addAttribute("signupform", new SignupForm());
 		return "signup";
 	}
 	
+	//Validates data and saves a new user if the data is valid.
 	@PostMapping("/saveuser")
 	public String saveUser(@Valid @ModelAttribute("signupform") SignupForm signupForm, BindingResult bindingResult) {
 		if (!bindingResult.hasErrors()) {
@@ -66,6 +75,7 @@ public class UserController {
 		return "redirect:/login";
 	}
 	
+	//Page where user can view users own recipes, edit them and delete them.
 	@GetMapping("/user")
 	@PreAuthorize("hasAuthority('USER')")
 	public String userPage(Model model, Principal p) {
@@ -74,6 +84,8 @@ public class UserController {
 			model.addAttribute("foods", frepository.findAllByUser(user));
 			return "userpage";
 		} catch (NullPointerException e) {
+			return "somethingwentwrong";
+		} catch (Exception e) {
 			return "somethingwentwrong";
 		}
 	}

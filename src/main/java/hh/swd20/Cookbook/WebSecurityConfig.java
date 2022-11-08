@@ -28,6 +28,7 @@ public class WebSecurityConfig {
 			.and()
 			.exceptionHandling().accessDeniedPage("/notallowed")
 			.and()
+		//For adding a new food.
 		.csrf().ignoringAntMatchers("/saverecipe/**")
 		.and()
 		.headers().frameOptions().sameOrigin().and()

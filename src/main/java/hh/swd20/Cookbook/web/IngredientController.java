@@ -24,6 +24,10 @@ import hh.swd20.Cookbook.domain.UnitRepository;
 import hh.swd20.Cookbook.domain.User;
 import hh.swd20.Cookbook.domain.UserRepository;
 
+/*
+ * This controller contains methods for creating, reading, updating and deleting ingredients.
+ */
+
 @Controller
 public class IngredientController {
 	
@@ -50,6 +54,10 @@ public class IngredientController {
 	@PreAuthorize("hasAuthority('USER')")
 	public String updateIngredient(@PathVariable("id") Long ingredientId, Model model, Principal p) {
 		try {
+			/*
+			 * If user is owner of the food that includes this ingredient,
+			 * the user is allowed to edit the ingredient.
+			 */
 			User user = urepository.findByUsername(p.getName());
 			Food food = irepository.findById(ingredientId).get().getFood();
 			if (food.getUser().getUserId().equals(user.getUserId())) {
@@ -59,6 +67,8 @@ public class IngredientController {
 			}
 			return "notallowed";
 		} catch (NullPointerException e) {
+			return "somethingwentwrong";
+		} catch (Exception e) {
 			return "somethingwentwrong";
 		}
 	}
@@ -71,11 +81,14 @@ public class IngredientController {
 	@PreAuthorize("hasAuthority('USER')")
 	public String updateIngredient(@ModelAttribute Ingredient ingredient, Principal p) {
 		try {
+			/*
+			 * If user is owner of the food that includes this ingredient,
+			 * the user is allowed to edit the ingredient.
+			 */
 			User user = urepository.findByUsername(p.getName());
 			Food food = frepository.findById(ingredient.getFood().getFoodId()).get();
 			Unit unit = ingredient.getAmount().getUnit();
 			Amount amount = ingredient.getAmount();
-			System.out.println(amount);
 			if (food.getUser().getUserId().equals(user.getUserId())) {
 				amount.setUnit(unit);
 				arepository.save(amount);
@@ -85,6 +98,8 @@ public class IngredientController {
 			return "notallowed";
 		} catch (NullPointerException e) {
 			return "somethingwentwrong";
+		} catch (Exception e) {
+			return "notallowed";
 		}
 	}
 	
@@ -96,6 +111,9 @@ public class IngredientController {
 	@PreAuthorize("hasAuthority('USER')")
 	public String addIngredient(@PathVariable("foodId") Long foodId, Model model, Principal p) {
 		try {
+			/*
+			 * If user is owner of the food, the user is allowed to add a new ingredient to the food.
+			 */
 			User user = urepository.findByUsername(p.getName());
 			Food food = frepository.findById(foodId).get();
 			if (food.getUser().getUserId().equals(user.getUserId())) {
@@ -106,6 +124,8 @@ public class IngredientController {
 			}
 			return "notallowed";
 		} catch (NullPointerException e) {
+			return "somethingwentwrong";
+		} catch (Exception e) {
 			return "somethingwentwrong";
 		}
 	}
@@ -118,6 +138,9 @@ public class IngredientController {
 	@PreAuthorize("hasAuthority('USER')")
 	public String saveIngredient(@ModelAttribute Ingredient ingredient, @PathVariable("foodId") Long foodId, Principal p) {
 		try {
+			/*
+			 * If user is owner of the food, the user is allowed to add a new ingredient to the food.
+			 */
 			User user = urepository.findByUsername(p.getName());
 			Food food = frepository.findById(foodId).get();
 			if (food.getUser().getUserId().equals(user.getUserId())) {
@@ -132,6 +155,8 @@ public class IngredientController {
 			return "notallowed";
 		} catch (NullPointerException e) {
 			return "somethingwentwrong";
+		} catch (Exception e) {
+			return "somethingwentwrong";
 		}
 	}
 	
@@ -139,6 +164,9 @@ public class IngredientController {
 	@PreAuthorize("hasAuthority('USER')")
 	public String deleteIngredient(@PathVariable("ingredientId") Long ingredientId, Principal p) {
 		try {
+			/*
+			 * If user is owner of the food, the user is allowed to delete the ingredient from the food.
+			 */
 			Ingredient ingredient = irepository.findById(ingredientId).get();
 			User user = urepository.findByUsername(p.getName());
 			Food food = ingredient.getFood();
@@ -148,6 +176,8 @@ public class IngredientController {
 			}
 			return "notallowed";
 		} catch (NullPointerException e) {
+			return "somethingwentwrong";
+		} catch (Exception e) {
 			return "somethingwentwrong";
 		}
 	}

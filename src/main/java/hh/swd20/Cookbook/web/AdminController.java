@@ -13,6 +13,12 @@ import hh.swd20.Cookbook.domain.Food.Status;
 import hh.swd20.Cookbook.domain.FoodRepository;
 import hh.swd20.Cookbook.domain.UserRepository;
 
+/*
+ * Controller provides endpoints for admin to:
+ * see all the recipes, delete recipe, delete user and review and approve recipes. 
+ */
+
+
 @Controller
 public class AdminController {
 	
@@ -26,11 +32,20 @@ public class AdminController {
 		return "notallowed";
 	}
 	
+	/*
+	 * Homepage for admin.
+	 */
+	
 	@GetMapping("/admin")
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public String adminPage() {
 			return "adminpage";
 	}
+	
+	/*
+	 * All the recipes in database. Here admin sees if a recipe is
+	 * approved or under review. Here admin can delete recipe.
+	 */
 	
 	@GetMapping("/allrecipes")
 	@PreAuthorize("hasAuthority('ADMIN')")
@@ -38,6 +53,10 @@ public class AdminController {
 			model.addAttribute("foods", frepository.findAll());
 			return "allrecipes";
 	}
+	
+	/*
+	 * Provides deleting recipe.
+	 */
 	
 	@GetMapping("/delete/{foodId}")
 	@PreAuthorize("hasAuthority('ADMIN')")
@@ -52,7 +71,11 @@ public class AdminController {
 			model.addAttribute("foods", frepository.findAllByStatus(Status.REVIEW));
 			return "reviewrecipes";
 	}
-
+	
+	/*
+	 * Here admin sees recipes that are under review.
+	 * Admin can approve or delete recipe here.
+	 */
 	
 	@GetMapping("/approve/{foodId}")
 	@PreAuthorize("hasAuthority('ADMIN')")
@@ -61,6 +84,9 @@ public class AdminController {
 			return "redirect:/reviewrecipes";
 	}
 	
+	/*
+	 * Admin sees all users. Admin can delete users here.
+	 */
 	
 	@GetMapping("/users")
 	@PreAuthorize("hasAuthority('ADMIN')")

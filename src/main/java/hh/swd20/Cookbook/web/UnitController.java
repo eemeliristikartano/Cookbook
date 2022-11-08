@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 import hh.swd20.Cookbook.domain.Unit;
 import hh.swd20.Cookbook.domain.UnitRepository;
 
+/*
+ * Restcontroller for units. 
+ */
+
 @CrossOrigin
 @RestController
 public class UnitController {
@@ -17,6 +21,7 @@ public class UnitController {
 	@Autowired
 	private UnitRepository unrepository;
 	
+	//Returns a list of all the units from database. List is used in the newfoodform so user can set unit for ingredient.
 	@GetMapping("/units")
 	public List<Unit> unitsRest() {
 		return (List<Unit>) unrepository.findAll();
