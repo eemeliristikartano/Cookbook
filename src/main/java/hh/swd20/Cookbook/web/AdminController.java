@@ -94,5 +94,16 @@ public class AdminController {
 			model.addAttribute("users", urepository.findAll());
 			return "users";
 	}
+	
+	/*
+	 * Provides user delete for admin.
+	 */
+	
+	@GetMapping("/deleteuser/{userId}")
+	@PreAuthorize("hasAuthority('ADMIN')")
+	public String deleteUser(@PathVariable("userId") Long userId) {
+		urepository.deleteById(userId);
+		return "redirect:/users";
+	}
 
 }
