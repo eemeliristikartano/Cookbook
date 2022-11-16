@@ -23,7 +23,7 @@
 			</table>
 			<br>
 			<h2>Ohjeet</h2>
-				<p th:text="${food.instructions}"></p>
+				<p style="white-space: pre-line" th:text="${food.instructions}"></p>
 				<br>
 				<p th:text="'Lähde: ' + ${food.source}"></p>
 				<p th:text="${food.user} ? 'Resepti lisätty ' + ${#temporals.format(food.dateCreated, 'dd.MM.yyyy')} + ' käyttäjän ' + ${food.user.username} + ' toimesta.' : 'Resepti lisätty ' +  ${#temporals.format(food.dateCreated, 'dd.MM.yyyy')} + '.'"></p>
